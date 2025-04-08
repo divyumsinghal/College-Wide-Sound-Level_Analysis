@@ -1,4 +1,4 @@
-M = readmatrix('FormatedData.xlsx','Range','A2:FW151');
+M = readmatrix('data/FormatedData_Gates.xlsx','Range','A2:FW151');
 
 Arts_Morning_Avg = (M(:,4) + M(:,19) + M(:,34) + M(:,49)) / 4;
 Arts_Afternoon_Avg = (M(:,9) + M(:,24) + M(:,39) + M(:,54)) / 4;
@@ -45,7 +45,7 @@ figure('Name', 'Line Plots for All Datasets');
 for i = 1:length(datasets)
     data_label = datasets{i,1};
     data = datasets{i,2};
-    
+
     subplot(3, 3, i);
     x = linspace(0, 750, length(data));
 
@@ -57,14 +57,14 @@ for i = 1:length(datasets)
     grid on;
 end
 
-saveas(gcf, 'Line_Plots_All_Datasets.png');
+saveas(gcf, 'stats/Line_Plots_All_Datasets.png');
 
 figure('Name', 'Histograms for All Datasets');
 
 for i = 1:length(datasets)
     data_label = datasets{i,1};
     data = datasets{i,2};
-    
+
     subplot(3, 3, i);
     histogram(data, 'Normalization', 'probability');
 
@@ -74,7 +74,7 @@ for i = 1:length(datasets)
     grid on;
 end
 
-saveas(gcf, 'Histograms_All_Datasets.png');
+saveas(gcf, 'stats/Histograms_All_Datasets.png');
 
 figure('Name', 'Overlay Plot for All Datasets');
 
@@ -94,9 +94,9 @@ xlabel('Time averaged over 5s interval (s)');
 ylabel('Sound Level (dB)');
 legend('Location', 'bestoutside');
 grid on;
-hold off;
 
-saveas(gcf, 'Overlay_Plot_All_Datasets.png');
+saveas(gcf, 'stats/Overlay_Plot_All_Datasets.png');
+hold off;
 
 colors = lines(3);
 
@@ -134,7 +134,7 @@ ylabel('Sound Level (dB)');
 legend;
 hold off;
 
-saveas(gcf, 'Line_Plots_Location.png');
+saveas(gcf, 'stats/Line_Plots_Location.png');
 
 
 figure('Name', 'Line Plots for Morning, Afternoon, Evening');
@@ -171,7 +171,7 @@ ylabel('Sound Level (dB)');
 legend;
 hold off;
 
-saveas(gcf, 'Line_Plots_Time.png');
+saveas(gcf, 'stats/Line_Plots_Time.png');
 
 for i = 1:length(datasets)
     data_label = datasets{i,1};
@@ -181,16 +181,16 @@ for i = 1:length(datasets)
     median_val = median(data);
     std_dev = std(data);
     variance_val = var(data);
-    
+
     q1 = quantile(data, 0.25);
     q3 = quantile(data, 0.75);
-    
+
     trimmed_mean_5 = trimmean(data, 5);
     trimmed_mean_20 = trimmean(data, 20);
 
     min_d = min(data);
     max_d = max(data);
-    
+
     central_tendencies_table{i+1, 1} = data_label;
     central_tendencies_table{i+1, 2} = mean_val;
     central_tendencies_table{i+1, 3} = median_val;
@@ -210,5 +210,5 @@ central_tendencies_table = cell2table(central_tendencies_table(2:end,:), ...
 disp('Central Tendencies Table:');
 disp(central_tendencies_table);
 
-writetable(central_tendencies_table, 'Central_Tendencies.csv');
+writetable(central_tendencies_table, 'stats/Central_Tendencies.csv');
 disp('Central tendencies saved as Central_Tendencies.csv');
